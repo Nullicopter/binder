@@ -16,6 +16,12 @@
 		C90F263D1323209900B67AFF /* PreferencePaneController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90F263C1323209900B67AFF /* PreferencePaneController.m */; };
 		C90F264E1323283800B67AFF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90F264D1323283800B67AFF /* PreferencePanes.framework */; };
 		C90F26521323287B00B67AFF /* PrefPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = C90F26511323287B00B67AFF /* PrefPane.xib */; };
+		C98AC5FE13244CDC00D1B4D2 /* SGHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C98AC5F713244CDC00D1B4D2 /* SGHotKey.m */; };
+		C98AC5FF13244CDC00D1B4D2 /* SGHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C98AC5F913244CDC00D1B4D2 /* SGHotKeyCenter.m */; };
+		C98AC60013244CDC00D1B4D2 /* SGKeyCodeTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = C98AC5FB13244CDC00D1B4D2 /* SGKeyCodeTranslator.m */; };
+		C98AC60113244CDC00D1B4D2 /* SGKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = C98AC5FD13244CDC00D1B4D2 /* SGKeyCombo.m */; };
+		C98AC6C713244DE100D1B4D2 /* SGKeyCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C98AC6C513244DE100D1B4D2 /* SGKeyCodes.plist */; };
+		C98AC6E1132450A500D1B4D2 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98AC6E0132450A500D1B4D2 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +42,16 @@
 		C90F263C1323209900B67AFF /* PreferencePaneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencePaneController.m; sourceTree = "<group>"; };
 		C90F264D1323283800B67AFF /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
 		C90F26511323287B00B67AFF /* PrefPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefPane.xib; sourceTree = "<group>"; };
+		C98AC5F613244CDC00D1B4D2 /* SGHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGHotKey.h; sourceTree = "<group>"; };
+		C98AC5F713244CDC00D1B4D2 /* SGHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGHotKey.m; sourceTree = "<group>"; };
+		C98AC5F813244CDC00D1B4D2 /* SGHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGHotKeyCenter.h; sourceTree = "<group>"; };
+		C98AC5F913244CDC00D1B4D2 /* SGHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGHotKeyCenter.m; sourceTree = "<group>"; };
+		C98AC5FA13244CDC00D1B4D2 /* SGKeyCodeTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGKeyCodeTranslator.h; sourceTree = "<group>"; };
+		C98AC5FB13244CDC00D1B4D2 /* SGKeyCodeTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGKeyCodeTranslator.m; sourceTree = "<group>"; };
+		C98AC5FC13244CDC00D1B4D2 /* SGKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGKeyCombo.h; sourceTree = "<group>"; };
+		C98AC5FD13244CDC00D1B4D2 /* SGKeyCombo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGKeyCombo.m; sourceTree = "<group>"; };
+		C98AC6C613244DE100D1B4D2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = English; path = English.lproj/SGKeyCodes.plist; sourceTree = "<group>"; };
+		C98AC6E0132450A500D1B4D2 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +61,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				C90F264E1323283800B67AFF /* PreferencePanes.framework in Frameworks */,
+				C98AC6E1132450A500D1B4D2 /* Carbon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +71,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C98AC5F513244CDC00D1B4D2 /* SGHotKeyLib */,
 				C90F26291323124800B67AFF /* BinderMenulet.h */,
 				C90F262A1323124800B67AFF /* BinderMenulet.m */,
 				C90F263B1323209900B67AFF /* PreferencePaneController.h */,
@@ -65,6 +83,8 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C98AC6E0132450A500D1B4D2 /* Carbon.framework */,
+				C90F264D1323283800B67AFF /* PreferencePanes.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -96,7 +116,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				C90F264D1323283800B67AFF /* PreferencePanes.framework */,
 			);
 			name = Binder;
 			sourceTree = "<group>";
@@ -113,6 +132,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C98AC6C513244DE100D1B4D2 /* SGKeyCodes.plist */,
 				C90F2634132318A400B67AFF /* menu.tiff */,
 				8D1107310486CEB800E47090 /* Binder-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -129,6 +149,21 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C98AC5F513244CDC00D1B4D2 /* SGHotKeyLib */ = {
+			isa = PBXGroup;
+			children = (
+				C98AC5F613244CDC00D1B4D2 /* SGHotKey.h */,
+				C98AC5F713244CDC00D1B4D2 /* SGHotKey.m */,
+				C98AC5F813244CDC00D1B4D2 /* SGHotKeyCenter.h */,
+				C98AC5F913244CDC00D1B4D2 /* SGHotKeyCenter.m */,
+				C98AC5FA13244CDC00D1B4D2 /* SGKeyCodeTranslator.h */,
+				C98AC5FB13244CDC00D1B4D2 /* SGKeyCodeTranslator.m */,
+				C98AC5FC13244CDC00D1B4D2 /* SGKeyCombo.h */,
+				C98AC5FD13244CDC00D1B4D2 /* SGKeyCombo.m */,
+			);
+			name = SGHotKeyLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,6 +220,7 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				C90F2635132318A400B67AFF /* menu.tiff in Resources */,
 				C90F26521323287B00B67AFF /* PrefPane.xib in Resources */,
+				C98AC6C713244DE100D1B4D2 /* SGKeyCodes.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,6 +234,10 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				C90F262B1323124800B67AFF /* BinderMenulet.m in Sources */,
 				C90F263D1323209900B67AFF /* PreferencePaneController.m in Sources */,
+				C98AC5FE13244CDC00D1B4D2 /* SGHotKey.m in Sources */,
+				C98AC5FF13244CDC00D1B4D2 /* SGHotKeyCenter.m in Sources */,
+				C98AC60013244CDC00D1B4D2 /* SGKeyCodeTranslator.m in Sources */,
+				C98AC60113244CDC00D1B4D2 /* SGKeyCombo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +258,14 @@
 				1DDD58150DA1D0A300B32029 /* English */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		C98AC6C513244DE100D1B4D2 /* SGKeyCodes.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C98AC6C613244DE100D1B4D2 /* English */,
+			);
+			name = SGKeyCodes.plist;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
