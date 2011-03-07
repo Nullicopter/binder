@@ -8,17 +8,19 @@
 
 #import <Cocoa/Cocoa.h>
 #import "PreferencePaneController.h"
-
+#import "DDHotKeyCenter.h"
 
 @interface BinderMenulet : NSObject {
     IBOutlet NSMenu *theMenu;
     
    @private
     NSStatusItem *statusItem;
+    DDHotKeyCenter *hotKeyCenter;
     PreferencePaneController *prefPane;
 }
 
 - (IBAction)displayPreferences:(id)sender;
+- (void)synchronize:(id)event;
 - (IBAction)quit:(id)sender;
 
 @end

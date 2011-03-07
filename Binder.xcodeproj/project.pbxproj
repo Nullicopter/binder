@@ -18,7 +18,23 @@
 		C90F26521323287B00B67AFF /* PrefPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = C90F26511323287B00B67AFF /* PrefPane.xib */; };
 		C98AC6E1132450A500D1B4D2 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98AC6E0132450A500D1B4D2 /* Carbon.framework */; };
 		C98AC7D71324753B00D1B4D2 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C98AC7D61324753B00D1B4D2 /* DDHotKeyCenter.m */; };
+		C98AC8D7132489D800D1B4D2 /* ShortcutRecorder.strings in Resources */ = {isa = PBXBuildFile; fileRef = C98AC8D5132489D800D1B4D2 /* ShortcutRecorder.strings */; };
+		C98AC8DB13248A1900D1B4D2 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98AC8DA13248A1900D1B4D2 /* ShortcutRecorder.framework */; };
+		C98AC8EB13248B7600D1B4D2 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C98AC8DA13248A1900D1B4D2 /* ShortcutRecorder.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C98AC8EA13248B7200D1B4D2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C98AC8EB13248B7600D1B4D2 /* ShortcutRecorder.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -41,6 +57,8 @@
 		C98AC6E0132450A500D1B4D2 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		C98AC7D51324753B00D1B4D2 /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyCenter.h; sourceTree = "<group>"; };
 		C98AC7D61324753B00D1B4D2 /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyCenter.m; sourceTree = "<group>"; };
+		C98AC8D6132489D800D1B4D2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/ShortcutRecorder.strings; sourceTree = "<group>"; };
+		C98AC8DA13248A1900D1B4D2 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +69,7 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				C90F264E1323283800B67AFF /* PreferencePanes.framework in Frameworks */,
 				C98AC6E1132450A500D1B4D2 /* Carbon.framework in Frameworks */,
+				C98AC8DB13248A1900D1B4D2 /* ShortcutRecorder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +95,7 @@
 				C98AC6E0132450A500D1B4D2 /* Carbon.framework */,
 				C90F264D1323283800B67AFF /* PreferencePanes.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				C98AC8DA13248A1900D1B4D2 /* ShortcutRecorder.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -124,6 +144,7 @@
 			children = (
 				C90F2634132318A400B67AFF /* menu.tiff */,
 				8D1107310486CEB800E47090 /* Binder-Info.plist */,
+				C98AC8D5132489D800D1B4D2 /* ShortcutRecorder.strings */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				C90F26511323287B00B67AFF /* PrefPane.xib */,
@@ -150,6 +171,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				C98AC8EA13248B7200D1B4D2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -194,6 +216,7 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				C90F2635132318A400B67AFF /* menu.tiff in Resources */,
 				C90F26521323287B00B67AFF /* PrefPane.xib in Resources */,
+				C98AC8D7132489D800D1B4D2 /* ShortcutRecorder.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +253,14 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
+		C98AC8D5132489D800D1B4D2 /* ShortcutRecorder.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C98AC8D6132489D800D1B4D2 /* English */,
+			);
+			name = ShortcutRecorder.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -238,6 +269,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../shortcutrecorder/build/Release\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -255,6 +291,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../shortcutrecorder/build/Release\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Binder_Prefix.pch;

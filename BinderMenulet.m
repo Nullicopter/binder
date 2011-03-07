@@ -7,11 +7,12 @@
 //
 
 #import "BinderMenulet.h"
-
+#import "DDHotKeyCenter.h"
 
 @implementation BinderMenulet
 - (void)dealloc {
     [statusItem release];
+    [hotKeyCenter release];
     [prefPane release];
     [super dealloc];
 }
@@ -33,10 +34,21 @@
     NSBundle *bundle = [NSBundle mainBundle];
     prefPane = [[PreferencePaneController alloc] initWithBundle:bundle];
     
+    hotKeyCenter = [[DDHotKeyCenter alloc] init];
+
+    if (![hotKeyCenter registerHotKeyWithKeyCode:53 modifierFlags:NSControlKeyMask target:self action:@selector(synchronize:) object:nil]) {
+		NSLog(@"Unable to register hotkey.");
+	} else {
+		NSLog(@"Registered: %@", [hotKeyCenter registeredHotKeys]);
+	}
+    
+}
+
+- (void)synchronize:(id)event {
+    NSLog(@"Received event");
 }
 
 - (IBAction)displayPreferences:(id)sender {
-    NSLog(@"displayPreferences");
     [prefPane displayPreferences];
 }
 
