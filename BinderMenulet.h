@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+
 #import "PreferencePaneController.h"
 #import "DDHotKeyCenter.h"
 
@@ -15,12 +16,11 @@
     
    @private
     NSStatusItem *statusItem;
-    DDHotKeyCenter *hotKeyCenter;
     PreferencePaneController *prefPane;
 }
 
+- (IBAction)synchronize:(id)event;
 - (IBAction)displayPreferences:(id)sender;
-- (void)synchronize:(id)event;
 - (IBAction)quit:(id)sender;
 
 @end

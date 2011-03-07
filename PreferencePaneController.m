@@ -6,8 +6,9 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "PreferencePaneController.h"
 #import <PreferencePanes/PreferencePanes.h>
+
+#import "PreferencePaneController.h"
 
 NSString * const BinderToolbarGeneralItemIdentifier = @"BinderToolbarGeneralItemIdentifier";
 NSString * const BinderToolbarGeneralItemLabel = @"General";
@@ -18,6 +19,8 @@ NSString * const BinderToolbarAccountItemLabel = @"Account";
 NSString * const BinderToolbarAccountItemImageName = @"NSUser";
 
 @implementation PreferencePaneController
+
+@synthesize globalSyncCombination;
 
 - (NSString *)mainNibName {
     return @"PrefPane";
@@ -55,7 +58,6 @@ NSString * const BinderToolbarAccountItemImageName = @"NSUser";
         [window setDelegate:self];
         [window makeKeyAndOrderFront:NSApp];
         [NSApp activateIgnoringOtherApps:YES];
-        
         [self didSelect];
     } else {
         NSLog(@"load preferences error");
@@ -97,32 +99,28 @@ NSString * const BinderToolbarAccountItemImageName = @"NSUser";
     return [item autorelease];
 }
 
-- (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar
-{
+- (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar {
     return [NSArray arrayWithObjects:
             BinderToolbarGeneralItemIdentifier,
             BinderToolbarAccountItemIdentifier,
             nil];
 }
 
-- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
-{
+- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar {
     return [NSArray arrayWithObjects:
             BinderToolbarGeneralItemIdentifier,
             BinderToolbarAccountItemIdentifier,
             nil];
 }
 
-- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar
-{
+- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar {
     return [NSArray arrayWithObjects:
             BinderToolbarGeneralItemIdentifier,
             BinderToolbarAccountItemIdentifier,
             nil];
 }
 
-- (BOOL)validateToolbarItem:(NSToolbarItem *)theItem
-{
+- (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
     return YES;
 }
 
@@ -141,6 +139,12 @@ NSString * const BinderToolbarAccountItemImageName = @"NSUser";
     [prefTabs selectTabViewItemWithIdentifier:[sender itemIdentifier]];
 }
 
+- (void)didSelect {
+    KeyCombo combo;
+    combo.code = 53;
+    combo.flags = NSControlKeyMask;
+    [globalSyncCombination setKeyCombo:combo];    
+}
 
 - (void)willUnselect {
 
@@ -181,6 +185,27 @@ NSString * const BinderToolbarAccountItemImageName = @"NSUser";
 //        return activity != FETCHING_USER_PROFILE;
 //    }
     return TRUE;
+}
+
+- (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason {
+	return NO;
+}
+
+- (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyComb {
+    NSLog(@"Changed keyCombo.");
+
+    DDHotKeyCenter *hotKeyCenter = [[DDHotKeyCenter alloc] init];
+    
+    [hotKeyCenter unregisterHotKeysWithTarget:[NSApp delegate] action:@selector(synchronize:)];
+
+    if (![hotKeyCenter registerHotKeyWithKeyCode:newKeyComb.code modifierFlags:newKeyComb.flags target:[NSApp delegate] action:@selector(synchronize:) object:nil]) {
+		NSLog(@"Unable to register hotkey.");
+	} else {
+		NSLog(@"Registered Prefs: %@", [hotKeyCenter registeredHotKeys]);
+	}
+    
+    [hotKeyCenter release];
+    
 }
 
 
