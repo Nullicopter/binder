@@ -8,6 +8,15 @@
 
 #import "BinderMenulet.h"
 #import "DDHotKeyCenter.h"
+#import "BinderConstants.h"
+
+NSString * const BinderToolbarGeneralItemIdentifier = @"BinderToolbarGeneralItemIdentifier";
+NSString * const BinderToolbarGeneralItemLabel = @"General";
+NSString * const BinderToolbarGeneralItemImageName = @"NSPreferencesGeneral";
+
+NSString * const BinderToolbarAccountItemIdentifier = @"BinderToolbarAccountItemIdentifier";
+NSString * const BinderToolbarAccountItemLabel = @"Account";
+NSString * const BinderToolbarAccountItemImageName = @"NSUser";
 
 @implementation BinderMenulet
 - (void)dealloc {
@@ -21,7 +30,7 @@
     NSImage *menuIconOn = [NSImage imageNamed:@"menu.tiff"];
 
     statusItem = [[[NSStatusBar systemStatusBar] 
-                   statusItemWithLength:NSVariableStatusItemLength]
+                   statusItemWithLength:NSVariableStatusItemLength] 
                   retain];
     [statusItem setHighlightMode:YES];
     [statusItem setImage:menuIconOn];
@@ -32,22 +41,11 @@
     // initialize preference pane for later use
     NSBundle *bundle = [NSBundle mainBundle];
     prefPane = [[PreferencePaneController alloc] initWithBundle:bundle];
-    
-    DDHotKeyCenter *hotKeyCenter = [[DDHotKeyCenter alloc] init];
-
-    if (![hotKeyCenter registerHotKeyWithKeyCode:53 modifierFlags:NSControlKeyMask target:[NSApp delegate] action:@selector(synchronize:) object:nil]) {
-		NSLog(@"Unable to register hotkey.");
-	} else {
-		NSLog(@"Registered: %@", [hotKeyCenter registeredHotKeys]);        
-	}
-    
-    [hotKeyCenter release];
-    
+    [prefPane updateHotKeyCombo];
 }
 
 - (IBAction)synchronize:(id)event {
     NSLog(@"Received event");
-    
 }
 
 - (IBAction)displayPreferences:(id)sender {

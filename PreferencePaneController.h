@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import <PreferencePanes/PreferencePanes.h>
 #import "ShortcutRecorder/ShortcutRecorder.h"
-
 #import "DDHotKeyCenter.h"
 
 @interface PreferencePaneController : NSPreferencePane <NSWindowDelegate, NSToolbarDelegate> {
@@ -25,9 +24,11 @@
 @property (nonatomic, retain) IBOutlet SRRecorderControl *globalSyncCombination;
 
 - (IBAction)changeTab:(id)sender;
+- (IBAction)changeDirectory:(id)sender;
 - (void)addToolbar;
 - (void)displayPreferences;
 - (void)closePreferences;
+- (void)updateHotKeyCombo;
 - (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason;
 - (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyComb;
 

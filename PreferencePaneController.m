@@ -1,3 +1,4 @@
+
 //
 //  PreferencePaneController.m
 //  Binder
@@ -7,16 +8,11 @@
 //
 
 #import <PreferencePanes/PreferencePanes.h>
-
 #import "PreferencePaneController.h"
+#import "BinderConstants.h"
 
-NSString * const BinderToolbarGeneralItemIdentifier = @"BinderToolbarGeneralItemIdentifier";
-NSString * const BinderToolbarGeneralItemLabel = @"General";
-NSString * const BinderToolbarGeneralItemImageName = @"NSPreferencesGeneral";
-
-NSString * const BinderToolbarAccountItemIdentifier = @"BinderToolbarAccountItemIdentifier";
-NSString * const BinderToolbarAccountItemLabel = @"Account";
-NSString * const BinderToolbarAccountItemImageName = @"NSUser";
+NSString * const BinderHotKeyCodePreferencesKey = @"hotKeyCode";
+NSString * const BinderHotKeyFlagsPreferencesKey = @"hotModifierFlags";
 
 @implementation PreferencePaneController
 
@@ -139,10 +135,31 @@ NSString * const BinderToolbarAccountItemImageName = @"NSUser";
     [prefTabs selectTabViewItemWithIdentifier:[sender itemIdentifier]];
 }
 
+- (IBAction)changeDirectory:(id)sender {
+    int result;
+    NSOpenPanel *oPanel = [NSOpenPanel openPanel];
+    
+    [oPanel setCanChooseFiles:NO];
+    [oPanel setCanChooseDirectories:YES];
+    [oPanel setAllowsMultipleSelection:NO];
+    [oPanel setTitle:@"Choose Document"];
+    [oPanel setMessage:@"Choose documents to copy to the target destination."];
+    [oPanel setDelegate:self];
+    result = [oPanel runModalForDirectory:NSHomeDirectory() file:nil types:nil];
+}
+
 - (void)didSelect {
+    
+    // Here fetch KeyCombo from the HotKeyCenter and set it in the view.
+    unsigned short keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyCodePreferencesKey];
+    if (!keyCode) keyCode = 53;
+    
+    NSUInteger modifierFlags = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyFlagsPreferencesKey];
+    if (!modifierFlags) modifierFlags = NSControlKeyMask;
+
     KeyCombo combo;
-    combo.code = 53;
-    combo.flags = NSControlKeyMask;
+    combo.code = keyCode;
+    combo.flags = modifierFlags;
     [globalSyncCombination setKeyCombo:combo];    
 }
 
@@ -192,20 +209,39 @@ NSString * const BinderToolbarAccountItemImageName = @"NSUser";
 }
 
 - (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyComb {
+    NSLog(@"New combo setup.");
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:newKeyComb.code forKey:@"hotKeyCode" ];
+    [[NSUserDefaults standardUserDefaults] setInteger:newKeyComb.flags forKey:@"hotModifierFlags" ];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self updateHotKeyCombo];
+}
+
+- (void)updateHotKeyCombo {
     NSLog(@"Changed keyCombo.");
 
     DDHotKeyCenter *hotKeyCenter = [[DDHotKeyCenter alloc] init];
-    
     [hotKeyCenter unregisterHotKeysWithTarget:[NSApp delegate] action:@selector(synchronize:)];
 
-    if (![hotKeyCenter registerHotKeyWithKeyCode:newKeyComb.code modifierFlags:newKeyComb.flags target:[NSApp delegate] action:@selector(synchronize:) object:nil]) {
+    unsigned short keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyCodePreferencesKey];
+    if (!keyCode) keyCode = 53;
+    
+    NSUInteger modifierFlags = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyFlagsPreferencesKey];
+    if (!modifierFlags) modifierFlags = NSControlKeyMask;
+    
+    if (![hotKeyCenter registerHotKeyWithKeyCode:keyCode 
+                                   modifierFlags:modifierFlags 
+                                          target:[NSApp delegate] 
+                                          action:@selector(synchronize:) 
+                                          object:nil]) {
 		NSLog(@"Unable to register hotkey.");
 	} else {
-		NSLog(@"Registered Prefs: %@", [hotKeyCenter registeredHotKeys]);
+		NSLog(@"Registered: %@", [hotKeyCenter registeredHotKeys]);        
 	}
     
     [hotKeyCenter release];
-    
+
 }
 
 
