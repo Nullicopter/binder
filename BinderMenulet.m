@@ -41,7 +41,7 @@ NSString * const BinderToolbarAccountItemImageName = @"NSUser";
     // initialize preference pane for later use
     NSBundle *bundle = [NSBundle mainBundle];
     prefPane = [[PreferencePaneController alloc] initWithBundle:bundle];
-    [prefPane updateHotKeyCombo];
+    [prefPane loadPreferences];
 }
 
 - (IBAction)synchronize:(id)event {

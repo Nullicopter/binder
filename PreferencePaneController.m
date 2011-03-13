@@ -11,20 +11,218 @@
 #import "PreferencePaneController.h"
 #import "BinderConstants.h"
 
-NSString * const BinderHotKeyCodePreferencesKey = @"hotKeyCode";
-NSString * const BinderHotKeyFlagsPreferencesKey = @"hotModifierFlags";
+NSString * const BinderSyncHotKeyCodePreferencesKey = @"syncHotKeyCode";
+NSString * const BinderSyncHotKeyFlagsPreferencesKey = @"syncHotKeyFlags";
+NSString * const BinderProjectsDirectoryPreferencesKey = @"projectsDirectory";
+NSString * const BinderAccountUsernamePreferencesKey = @"accountUsername";
+NSString * const BinderAccountPasswordPreferencesKey = @"accountPassword";
+NSString * const BinderStartAtLoginPreferencesKey = @"startAtLogin";
+
+// TODO: since the preferences are just a few I should have a dictionary that
+// contains all of them and flush all of it to disk when one changes and then
+// hook the values of the objects up to the dictionary keys or set fields and
+// hook those up. Maybe set getters and setters for preferences that save
+// to disk and hook the value of widgets up to this stuff.
 
 @implementation PreferencePaneController
 
 @synthesize globalSyncCombination;
+@synthesize projectsDirectory;
+@synthesize accountPasswordField;
+@synthesize accountUsernameField;
+@synthesize startAtLoginSwitch;
+@synthesize accountCredentials;
+
+- (IBAction)changeTab:(id)sender {
+    NSLog(@"Change to %@", [sender itemIdentifier]);
+    [prefTabs selectTabViewItemWithIdentifier:[sender itemIdentifier]];
+}
+- (IBAction)linkAccount:(id)sender {
+    NSString *username = [self.accountUsernameField stringValue];
+    NSString *password = [self.accountPasswordField stringValue];
+    // XXX This is so broken it's hard to believe, but for now it's cool
+    [[NSUserDefaults standardUserDefaults] setObject:username forKey:BinderAccountUsernamePreferencesKey];
+    [[NSUserDefaults standardUserDefaults] setObject:password forKey:BinderAccountPasswordPreferencesKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self updateAccountCredentials];
+}
+- (IBAction)changeStartAtLoginStatus:(id)sender {
+    BOOL shouldStartAtLogin = NO;
+    if ([self.startAtLoginSwitch state] == NSOnState) shouldStartAtLogin = YES;
+
+    [[NSUserDefaults standardUserDefaults] setBool:shouldStartAtLogin forKey:BinderStartAtLoginPreferencesKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)changeDirectory:(id)sender {
+    int result;
+    NSOpenPanel *oPanel = [NSOpenPanel openPanel];
+    
+    [oPanel setCanChooseFiles:NO];
+    [oPanel setCanChooseDirectories:YES];
+    [oPanel setCanCreateDirectories:YES];
+    [oPanel setAllowsMultipleSelection:NO];
+    [oPanel setTitle:@"Choose Folder"];
+    [oPanel setMessage:@"Choose a Projects working directory."];
+    [oPanel setDelegate:self];
+    [oPanel setDirectoryURL:[NSURL fileURLWithPath:NSHomeDirectory()]];
+    result = [oPanel runModal];
+
+    NSURL *url = [[oPanel URLs] objectAtIndex:0];
+    if (![url isFileURL]) return;
+    
+    NSLog(@"Moved project location at %@", [url path]);
+    [[NSUserDefaults standardUserDefaults] setObject:[url path] forKey:BinderProjectsDirectoryPreferencesKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self updateProjectsDirectory];
+    [projectsDirectoryField setStringValue:self.projectsDirectory];
+}
+
+- (void)loadPreferences {
+    [self updateProjectsDirectory];
+    [self updateHotKeyCombo];
+    [self updateAccountCredentials];
+    [self updateStartAtLogin];
+}
+
+- (void)updateStartAtLogin {
+    BOOL shouldStartAtLogin = [[NSUserDefaults standardUserDefaults] boolForKey:BinderStartAtLoginPreferencesKey];
+    if (shouldStartAtLogin) [self.startAtLoginSwitch setState:NSOnState];
+}
+
+- (void)updateProjectsDirectory {
+    NSLog(@"Updating project directory location");
+    
+    NSString *directory = [[NSUserDefaults standardUserDefaults] objectForKey:BinderProjectsDirectoryPreferencesKey];
+    if (!directory) directory = [NSHomeDirectory() stringByAppendingPathComponent:@"Projects"];
+    self.projectsDirectory = directory;
+    
+    NSLog(@"Moved project location at %@", self.projectsDirectory);
+
+}
+
+- (void)updateAccountCredentials {
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:BinderAccountUsernamePreferencesKey];
+    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:BinderAccountPasswordPreferencesKey];
+
+    if (!username) username = @"";
+    if (!password) password = @"";
+
+    NSArray *objects = [NSArray arrayWithObjects: username, password, nil];
+    NSArray *keys = [NSArray arrayWithObjects: @"username", @"password", nil];
+    NSDictionary *credentials = [NSDictionary dictionaryWithObjects: objects
+                                                            forKeys: keys];
+    self.accountCredentials = credentials;
+}
+
+- (void)updateHotKeyCombo {
+    NSLog(@"Changed keyCombo.");
+    
+    DDHotKeyCenter *hotKeyCenter = [[DDHotKeyCenter alloc] init];
+    [hotKeyCenter unregisterHotKeysWithTarget:[NSApp delegate] action:@selector(synchronize:)];
+    
+    unsigned short keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:BinderSyncHotKeyCodePreferencesKey];
+    if (!keyCode) keyCode = 53;
+    
+    NSUInteger modifierFlags = [[NSUserDefaults standardUserDefaults] integerForKey:BinderSyncHotKeyFlagsPreferencesKey];
+    if (!modifierFlags) modifierFlags = NSControlKeyMask;
+    
+    if (![hotKeyCenter registerHotKeyWithKeyCode:keyCode 
+                                   modifierFlags:modifierFlags 
+                                          target:[NSApp delegate] 
+                                          action:@selector(synchronize:) 
+                                          object:nil]) {
+		NSLog(@"Unable to register hotkey.");
+	} else {
+		NSLog(@"Registered: %@", [hotKeyCenter registeredHotKeys]);        
+	}
+    
+    [hotKeyCenter release];
+    
+}
+
+
+
+// NSWindowDelegate methods
 
 - (NSString *)mainNibName {
     return @"PrefPane";
 }
 
 - (void)mainViewDidLoad {
-    //  NSLog(@"mainViewDidLoad  %@", [profileURL delegate]);
+    NSLog(@"Opened Preferences");
 }
+
+-(void) closePreferences {
+    [self willUnselect];
+    
+    // displayPreferences checks for NULL to see whether pref window is currently open
+    window = NULL;
+    
+    [self didUnselect];
+}
+- (void)didSelect {
+    
+    // Here fetch KeyCombo from the HotKeyCenter and set it in the view.
+    unsigned short keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:BinderSyncHotKeyCodePreferencesKey];
+    if (!keyCode) keyCode = 53;
+    
+    NSUInteger modifierFlags = [[NSUserDefaults standardUserDefaults] integerForKey:BinderSyncHotKeyFlagsPreferencesKey];
+    if (!modifierFlags) modifierFlags = NSControlKeyMask;
+    
+    KeyCombo combo;
+    combo.code = keyCode;
+    combo.flags = modifierFlags;
+    [globalSyncCombination setKeyCombo:combo];
+    
+    // Set the directory of the project
+    [projectsDirectoryField setStringValue:self.projectsDirectory];
+    
+    // Set the username/password stuff
+    [self.accountUsernameField setStringValue: [self.accountCredentials objectForKey:@"username"]];
+    [self.accountPasswordField setStringValue: [self.accountCredentials objectForKey:@"password"]];
+    
+    // Set the state of startAtLogin
+    [self updateStartAtLogin];
+}
+
+- (void)willUnselect {
+    
+}
+
+- (void)didUnselect {
+    
+}
+
+- (void)willSelect {
+    
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification {
+
+}
+
+- (void)windowWillClose:(NSNotification *)notification {
+    if ([notification object] == window) {
+        [self closePreferences];
+    }
+    // If you have more than one window and this is the one that
+    // got closed then bring back the other one.
+    //    else if ([notification object] == profileInputWindow) {
+    //        [NSApp stopModal];
+    //        [window makeKeyAndOrderFront:NSApp];
+    //        [NSApp activateIgnoringOtherApps:YES];
+    //    }
+}
+
+- (BOOL)windowShouldClose:(id)sender {
+    return TRUE;
+}
+
+
+// Helper functions
 
 -(void) displayPreferences {
     if (window != NULL) {
@@ -70,6 +268,9 @@ NSString * const BinderHotKeyFlagsPreferencesKey = @"hotModifierFlags";
     [theToolbar setSelectedItemIdentifier:BinderToolbarGeneralItemIdentifier];
 
 }
+
+
+// NSToolbarDelegate methods
 
 - (NSToolbarItem*)toolbar:(NSToolbar*)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)willBeInsertedIntoToolbar {
     NSToolbarItem *item = nil;
@@ -120,89 +321,10 @@ NSString * const BinderHotKeyFlagsPreferencesKey = @"hotModifierFlags";
     return YES;
 }
 
--(void) closePreferences {
-    [self willUnselect];
-    
-    // displayPreferences checks for NULL to see whether pref window is currently open
-    window = NULL;
-    
-    [self didUnselect];
-}
 
 
-- (IBAction)changeTab:(id)sender {
-    NSLog(@"Change to %@", [sender itemIdentifier]);
-    [prefTabs selectTabViewItemWithIdentifier:[sender itemIdentifier]];
-}
 
-- (IBAction)changeDirectory:(id)sender {
-    int result;
-    NSOpenPanel *oPanel = [NSOpenPanel openPanel];
-    
-    [oPanel setCanChooseFiles:NO];
-    [oPanel setCanChooseDirectories:YES];
-    [oPanel setAllowsMultipleSelection:NO];
-    [oPanel setTitle:@"Choose Document"];
-    [oPanel setMessage:@"Choose documents to copy to the target destination."];
-    [oPanel setDelegate:self];
-    result = [oPanel runModalForDirectory:NSHomeDirectory() file:nil types:nil];
-}
-
-- (void)didSelect {
-    
-    // Here fetch KeyCombo from the HotKeyCenter and set it in the view.
-    unsigned short keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyCodePreferencesKey];
-    if (!keyCode) keyCode = 53;
-    
-    NSUInteger modifierFlags = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyFlagsPreferencesKey];
-    if (!modifierFlags) modifierFlags = NSControlKeyMask;
-
-    KeyCombo combo;
-    combo.code = keyCode;
-    combo.flags = modifierFlags;
-    [globalSyncCombination setKeyCombo:combo];    
-}
-
-- (void)willUnselect {
-
-}
-
-- (void)didUnselect {
-    
-}
-
-- (void)willSelect {
-
-}
-
-- (void)windowDidResignKey:(NSNotification *)notification {
-//    if ([notification object] == window) {
-        // will also be invoked when window is closed, so check first
-//        if (window != NULL) {
-//            [self flushPreferences];
-//        }
-//    }
-}
-
-- (void)windowWillClose:(NSNotification *)notification {
-    if ([notification object] == window) {
-        [self closePreferences];
-    }
-// If you have more than one window and this is the one that
-// got closed then bring back the other one.
-//    else if ([notification object] == profileInputWindow) {
-//        [NSApp stopModal];
-//        [window makeKeyAndOrderFront:NSApp];
-//        [NSApp activateIgnoringOtherApps:YES];
-//    }
-}
-
-- (BOOL)windowShouldClose:(id)sender {
-//    if (sender == profileInputWindow) {
-//        return activity != FETCHING_USER_PROFILE;
-//    }
-    return TRUE;
-}
+// SRRecorderControl delegates
 
 - (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason {
 	return NO;
@@ -211,37 +333,22 @@ NSString * const BinderHotKeyFlagsPreferencesKey = @"hotModifierFlags";
 - (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyComb {
     NSLog(@"New combo setup.");
     
-    [[NSUserDefaults standardUserDefaults] setInteger:newKeyComb.code forKey:@"hotKeyCode" ];
-    [[NSUserDefaults standardUserDefaults] setInteger:newKeyComb.flags forKey:@"hotModifierFlags" ];
+    [[NSUserDefaults standardUserDefaults] setInteger:newKeyComb.code forKey:BinderSyncHotKeyCodePreferencesKey ];
+    [[NSUserDefaults standardUserDefaults] setInteger:newKeyComb.flags forKey:BinderSyncHotKeyFlagsPreferencesKey ];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self updateHotKeyCombo];
 }
 
-- (void)updateHotKeyCombo {
-    NSLog(@"Changed keyCombo.");
-
-    DDHotKeyCenter *hotKeyCenter = [[DDHotKeyCenter alloc] init];
-    [hotKeyCenter unregisterHotKeysWithTarget:[NSApp delegate] action:@selector(synchronize:)];
-
-    unsigned short keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyCodePreferencesKey];
-    if (!keyCode) keyCode = 53;
+// NSOpenSavePanelDelegate
+- (BOOL)panel:(id)sender shouldEnableURL:(NSURL *)url {
+    if (![url isFileURL]) return NO;
     
-    NSUInteger modifierFlags = [[NSUserDefaults standardUserDefaults] integerForKey:BinderHotKeyFlagsPreferencesKey];
-    if (!modifierFlags) modifierFlags = NSControlKeyMask;
-    
-    if (![hotKeyCenter registerHotKeyWithKeyCode:keyCode 
-                                   modifierFlags:modifierFlags 
-                                          target:[NSApp delegate] 
-                                          action:@selector(synchronize:) 
-                                          object:nil]) {
-		NSLog(@"Unable to register hotkey.");
-	} else {
-		NSLog(@"Registered: %@", [hotKeyCenter registeredHotKeys]);        
-	}
-    
-    [hotKeyCenter release];
-
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+    BOOL isDir = NO;
+    if ([fileManager fileExistsAtPath:[url path] isDirectory:&isDir] && isDir)
+        return YES;
+    return NO;
 }
 
 

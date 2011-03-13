@@ -14,6 +14,3 @@ extern NSString * const BinderToolbarGeneralItemImageName;
 extern NSString * const BinderToolbarAccountItemIdentifier;
 extern NSString * const BinderToolbarAccountItemLabel;
 extern NSString * const BinderToolbarAccountItemImageName;
-
-extern NSString * const BinderHotKeyCodePreferencesKey;
-extern NSString * const BinderHotKeyFlagsPreferencesKey;
