@@ -16,13 +16,16 @@ NSString * const BinderSyncHotKeyFlagsPreferencesKey = @"syncHotKeyFlags";
 NSString * const BinderProjectsDirectoryPreferencesKey = @"projectsDirectory";
 NSString * const BinderAccountUsernamePreferencesKey = @"accountUsername";
 NSString * const BinderAccountPasswordPreferencesKey = @"accountPassword";
-NSString * const BinderStartAtLoginPreferencesKey = @"startAtLogin";
 
 // TODO: since the preferences are just a few I should have a dictionary that
 // contains all of them and flush all of it to disk when one changes and then
 // hook the values of the objects up to the dictionary keys or set fields and
 // hook those up. Maybe set getters and setters for preferences that save
 // to disk and hook the value of widgets up to this stuff.
+
+@interface PreferencePaneController()
+- (LSSharedFileListItemRef)findStartupItem:(NSString *)appPath;
+@end
 
 @implementation PreferencePaneController
 
@@ -46,13 +49,6 @@ NSString * const BinderStartAtLoginPreferencesKey = @"startAtLogin";
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self updateAccountCredentials];
-}
-- (IBAction)changeStartAtLoginStatus:(id)sender {
-    BOOL shouldStartAtLogin = NO;
-    if ([self.startAtLoginSwitch state] == NSOnState) shouldStartAtLogin = YES;
-
-    [[NSUserDefaults standardUserDefaults] setBool:shouldStartAtLogin forKey:BinderStartAtLoginPreferencesKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)changeDirectory:(id)sender {
@@ -80,6 +76,58 @@ NSString * const BinderStartAtLoginPreferencesKey = @"startAtLogin";
     [projectsDirectoryField setStringValue:self.projectsDirectory];
 }
 
+- (IBAction)changeStartAtLoginStatus:(id)sender {
+    NSString *appPath = [[NSBundle mainBundle] bundlePath];
+	CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:appPath]; 
+    LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+    if (loginItems) {
+        if ([startAtLoginSwitch state]) {
+            //Insert an item to the list.
+            LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemLast, NULL, NULL, url, NULL, NULL);
+            if (item) {
+                CFRelease(item);
+            }
+        } else {
+            LSSharedFileListItemRef itemRef = [self findStartupItem:appPath];
+            if (itemRef) {
+                LSSharedFileListItemRemove(loginItems, itemRef);
+            }
+        }
+        
+        CFRelease(loginItems);
+    }
+}
+
+- (LSSharedFileListItemRef)findStartupItem:(NSString *)appPath {
+    LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+    
+    if (loginItems) {
+		UInt32 seedValue;
+		NSArray *loginItemsArray = (NSArray *)LSSharedFileListCopySnapshot(loginItems, &seedValue);
+        CFRelease(loginItems);
+        
+		for (int i = 0; i < [loginItemsArray count]; ++i) {
+			LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)[loginItemsArray objectAtIndex:i];
+            
+			//Resolve the item with URL
+            CFURLRef url;
+			if (LSSharedFileListItemResolve(itemRef, 0, (CFURLRef*) &url, NULL) == noErr) {
+				NSString *urlPath = [(NSURL*)url path];
+                CFRelease(url);
+				if ([urlPath compare:appPath] == NSOrderedSame){
+                    CFRetain(itemRef);
+                    [loginItemsArray release];
+                    return itemRef;
+				}
+			}
+		}
+		[loginItemsArray release];
+    }
+    
+    return nil;
+}
+
+
 - (void)loadPreferences {
     [self updateProjectsDirectory];
     [self updateHotKeyCombo];
@@ -88,8 +136,14 @@ NSString * const BinderStartAtLoginPreferencesKey = @"startAtLogin";
 }
 
 - (void)updateStartAtLogin {
-    BOOL shouldStartAtLogin = [[NSUserDefaults standardUserDefaults] boolForKey:BinderStartAtLoginPreferencesKey];
-    if (shouldStartAtLogin) [self.startAtLoginSwitch setState:NSOnState];
+    [startAtLoginSwitch setState:0];
+    //[startAtLoginSwitch setTarget:self];
+    //[startAtLoginSwitch setAction:@selector(updateStartupLaunchAction:)];
+    
+    NSString *appPath = [[NSBundle mainBundle] bundlePath];
+    if ([self findStartupItem:appPath]) {
+        [startAtLoginSwitch setState:1];
+    }
 }
 
 - (void)updateProjectsDirectory {
@@ -197,7 +251,7 @@ NSString * const BinderStartAtLoginPreferencesKey = @"startAtLogin";
 }
 
 - (void)willSelect {
-    
+
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification {
