@@ -1,0 +1,296 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C94CCE71136E51810072F813 /* bindocol.py in Resources */ = {isa = PBXBuildFile; fileRef = C94CCE70136E51810072F813 /* bindocol.py */; };
+		C9E8238A135D22A200287419 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E82389135D22A200287419 /* Cocoa.framework */; };
+		C9E82394135D22A200287419 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C9E82392135D22A200287419 /* InfoPlist.strings */; };
+		C9E82397135D22A200287419 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E82396135D22A200287419 /* main.m */; };
+		C9E8239A135D22A200287419 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C9E82398135D22A200287419 /* Credits.rtf */; };
+		C9E823A0135D22A200287419 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9E8239E135D22A200287419 /* MainMenu.xib */; };
+		C9E823A7135D235B00287419 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E823A6135D235B00287419 /* Python.framework */; };
+		C9E823A9135D241D00287419 /* main.py in Resources */ = {isa = PBXBuildFile; fileRef = C9E823A8135D241D00287419 /* main.py */; };
+		C9E823AB135D245400287419 /* syncerAppDelegate.py in Resources */ = {isa = PBXBuildFile; fileRef = C9E823AA135D245400287419 /* syncerAppDelegate.py */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C94CCE70136E51810072F813 /* bindocol.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bindocol.py; sourceTree = "<group>"; };
+		C9E82385135D22A200287419 /* syncer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = syncer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9E82389135D22A200287419 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		C9E8238C135D22A200287419 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		C9E8238D135D22A200287419 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C9E8238E135D22A200287419 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C9E82391135D22A200287419 /* syncer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "syncer-Info.plist"; sourceTree = "<group>"; };
+		C9E82393135D22A200287419 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C9E82395135D22A200287419 /* syncer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "syncer-Prefix.pch"; sourceTree = "<group>"; };
+		C9E82396135D22A200287419 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C9E82399135D22A200287419 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		C9E8239F135D22A200287419 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		C9E823A6135D235B00287419 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
+		C9E823A8135D241D00287419 /* main.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
+		C9E823AA135D245400287419 /* syncerAppDelegate.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = syncerAppDelegate.py; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C9E82382135D22A200287419 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9E823A7135D235B00287419 /* Python.framework in Frameworks */,
+				C9E8238A135D22A200287419 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C9E8237A135D22A200287419 = {
+			isa = PBXGroup;
+			children = (
+				C9E823A6135D235B00287419 /* Python.framework */,
+				C9E8238F135D22A200287419 /* syncer */,
+				C9E82388135D22A200287419 /* Frameworks */,
+				C9E82386135D22A200287419 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C9E82386135D22A200287419 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C9E82385135D22A200287419 /* syncer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C9E82388135D22A200287419 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C9E82389135D22A200287419 /* Cocoa.framework */,
+				C9E8238B135D22A200287419 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C9E8238B135D22A200287419 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C9E8238C135D22A200287419 /* AppKit.framework */,
+				C9E8238D135D22A200287419 /* CoreData.framework */,
+				C9E8238E135D22A200287419 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		C9E8238F135D22A200287419 /* syncer */ = {
+			isa = PBXGroup;
+			children = (
+				C9E8239E135D22A200287419 /* MainMenu.xib */,
+				C9E82390135D22A200287419 /* Supporting Files */,
+				C9E823A8135D241D00287419 /* main.py */,
+				C9E823AA135D245400287419 /* syncerAppDelegate.py */,
+				C94CCE70136E51810072F813 /* bindocol.py */,
+			);
+			path = syncer;
+			sourceTree = "<group>";
+		};
+		C9E82390135D22A200287419 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C9E82391135D22A200287419 /* syncer-Info.plist */,
+				C9E82392135D22A200287419 /* InfoPlist.strings */,
+				C9E82395135D22A200287419 /* syncer-Prefix.pch */,
+				C9E82396135D22A200287419 /* main.m */,
+				C9E82398135D22A200287419 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C9E82384135D22A200287419 /* syncer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C9E823A3135D22A200287419 /* Build configuration list for PBXNativeTarget "syncer" */;
+			buildPhases = (
+				C9E82381135D22A200287419 /* Sources */,
+				C9E82382135D22A200287419 /* Frameworks */,
+				C9E82383135D22A200287419 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = syncer;
+			productName = syncer;
+			productReference = C9E82385135D22A200287419 /* syncer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C9E8237C135D22A200287419 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C9E8237F135D22A200287419 /* Build configuration list for PBXProject "syncer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C9E8237A135D22A200287419;
+			productRefGroup = C9E82386135D22A200287419 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C9E82384135D22A200287419 /* syncer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C9E82383135D22A200287419 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9E82394135D22A200287419 /* InfoPlist.strings in Resources */,
+				C9E8239A135D22A200287419 /* Credits.rtf in Resources */,
+				C9E823A0135D22A200287419 /* MainMenu.xib in Resources */,
+				C9E823A9135D241D00287419 /* main.py in Resources */,
+				C9E823AB135D245400287419 /* syncerAppDelegate.py in Resources */,
+				C94CCE71136E51810072F813 /* bindocol.py in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C9E82381135D22A200287419 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9E82397135D22A200287419 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C9E82392135D22A200287419 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C9E82393135D22A200287419 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C9E82398135D22A200287419 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C9E82399135D22A200287419 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		C9E8239E135D22A200287419 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C9E8239F135D22A200287419 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C9E823A1135D22A200287419 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C9E823A2135D22A200287419 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C9E823A4135D22A200287419 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "syncer/syncer-Prefix.pch";
+				INFOPLIST_FILE = "syncer/syncer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C9E823A5135D22A200287419 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "syncer/syncer-Prefix.pch";
+				INFOPLIST_FILE = "syncer/syncer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C9E8237F135D22A200287419 /* Build configuration list for PBXProject "syncer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9E823A1135D22A200287419 /* Debug */,
+				C9E823A2135D22A200287419 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9E823A3135D22A200287419 /* Build configuration list for PBXNativeTarget "syncer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9E823A4135D22A200287419 /* Debug */,
+				C9E823A5135D22A200287419 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C9E8237C135D22A200287419 /* Project object */;
+}
